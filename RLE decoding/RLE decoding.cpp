@@ -9,56 +9,41 @@ int main() {
     int n, m, k, sizeM = 0, sizeS = 0;
     string mn;
     string ms;
-    
+    cin >> n >> m >> k;
     cin >> mn >> ms;
-    for (int i = 0; i < mn.length(); i++)
-        if (!isdigit(mn[i]))
-            sizeM++;
-    for (int i = 0; i < ms.length(); i++)
-        if (!isdigit(ms[i]))
-            sizeS++;
-    int* am = new int[sizeM];
-    int* as = new int[sizeS];
-    char* bm = new char[sizeM];
-    char* bs = new char[sizeS];
     stringstream str(mn);
-    for (int i = 0; i < sizeM; i++)
-        str >> bm[i] >> am[i];
-    str = stringstream(ms);
-    for (int i = 0; i < sizeS; i++)
-        str >> bs[i] >> as[i];
-    int tmp;
-    while (resS < sizeS && resM < sizeM) 
+    stringstream str1(ms);
+
+    char bm, bs;
+    int am, as;
+    str >> bm >> am;
+    str1 >> bs >> as;
+    int a = 0;
+    while (str && str1)
     {
-        if (bm[resM] == bs[resS]) {
-            tmp = am[resM];
-            am[resM] -= as[resS];
-            as[resS] -= tmp;
-            if (am[resM] <= 0) {
-                resM++;
+        if (bm == bs)
+        {
+            a = 0;
+        }
+        else a = 1;
+            if (am < as) {
+                res += am*a;
+                as -= am;
+                str >> bm >> am;
             }
-            if (as[resS] <= 0) {
-                resS++;
+            else if (am == as) {
+                res += am*a;
+                as -= am;
+                str >> bm >> am;
+                str1 >> bs >> as;
+            }
+            else if (am > as) {
+                res += as*a;
+                am -= as;
+                str1 >> bs >> as;
             }
         }
-        else {
-            if (am[resM] < as[resS]) {
-                res += am[resM];
-                as[resS] -= am[resM];
-                resM++;
-            }
-            if (am[resM] == as[resS]) {
-                res += am[resM];
-                resS++;
-                resM++;
-            }
-            else {
-                res += as[resS];
-                am[resM] -= as[resS];
-                resS++;
-            }
-        }
-    }
+
     if (res < k) {
         cout << "Yes";
     }
@@ -66,9 +51,5 @@ int main() {
         cout << "No";
     }
 
-    delete[] bm;
-    delete[] bs;
-    delete[] as;
-    delete[] am;
     return 0;
 }
